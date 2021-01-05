@@ -11,10 +11,14 @@ import org.frcteam2910.common.robot.Utilities;
 public class DriveCommand extends Command {
 
 
+
     public DriveCommand() {
         requires(DrivetrainSubsystem.getInstance());
+        requires(Limelight.getInstance());
+    }
 
 
+    private void requires(Limelight instance) {
     }
 
     @Override
@@ -34,11 +38,13 @@ public class DriveCommand extends Command {
         double rotation;
         if(Robot.getOi().getPrimaryJoystick().getRawButton(1))
         {
-            rotation = Robot.limelight.rotatetoTarget(RobotMap.LimeLightDrivePID); //add limelight thing
+            rotation = Robot.limelight.rotatetoTarget(RobotMap.LimelightConstants.LimeLightDrivePID); //add limelight thing
+           // Robot.limelight.setLED(3);
         }
         else
         {
             rotation = Robot.getOi().getPrimaryJoystick().getRawAxis(4);  
+           // Robot.limelight.setLED(1);
         }
         
         

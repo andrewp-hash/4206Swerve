@@ -8,13 +8,13 @@
 package com.swervedrivespecialties.exampleswerve.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.swervedrivespecialties.exampleswerve.commands.DriveCommand;
+
+import com.swervedrivespecialties.exampleswerve.RobotMap;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import java.lang.Math;
+
 
 public class Limelight extends SubsystemBase {
   //About: Instance NetworkTable to obtain realtime data from the Limelight
@@ -30,10 +30,22 @@ public class Limelight extends SubsystemBase {
 
   private static Limelight instance;
 
-  
+  public static Limelight getInstance() {
+    if (instance == null) {
+        instance = new Limelight();
+    }
+
+    return instance;
+}
+
+
   public Limelight() {
 
   }
+
+
+
+
 
   //---------------------------Place Getters Here-------------------------------
 
@@ -70,52 +82,15 @@ public class Limelight extends SubsystemBase {
   }
 
 
-/*
+
 
   //Name: Brennan, Dante(aka math man)  
   //About: calc the distance to the target
   public double distanceToTarget(){
     double offsetAngle = verticalOffset.getDouble(0);
-    return (Constants.LimelightConstants.goalHeight-Constants.LimelightConstants.cameraHeight)/Math.tan(Constants.LimelightConstants.mountAngle + ((offsetAngle*2*Math.PI)/360));
+    return (RobotMap.LimelightConstants.goalHeight-RobotMap.LimelightConstants.cameraHeight)/Math.tan(RobotMap.LimelightConstants.mountAngle + ((offsetAngle*2*Math.PI)/360));
   }
 
-
-
-
-  //Name: Brennan, Dante(aka math man)
-  //About: Uses the distance to find the optimal shooter velocity at that range 
-  public double getShooterVelocity(){
-    double setVelocity = 0;
-
-    if ((distanceToTarget() >= 0 ) && (distanceToTarget() < .5 )){
-      setVelocity = 2178.19;
-    }
-    else if ((distanceToTarget() >= .5) &&( distanceToTarget() < 11.5)){
-      setVelocity = 7900.00; //set to the maximum RPM cause of the optimal distance 
-    }
-    else if ((distanceToTarget() >= 11.5) &&( distanceToTarget() < 13.5)){
-      setVelocity = 3872.00;
-    }
-    else if ((distanceToTarget() >= 13.5) &&( distanceToTarget() < 17.5)){
-      setVelocity = 4250.00;
-    }
-    else if ((distanceToTarget() >= 17.5) &&( distanceToTarget() < 20.0)){
-      setVelocity = 5850.00; //known set velo 
-    }
-    else if ((distanceToTarget() >= 17.5) &&( distanceToTarget() < 27.5)){
-      setVelocity = 6500.00;
-    }
-    else if ((distanceToTarget() >= 27.5) && (distanceToTarget() < 40.0)){
-      setVelocity = 7200.00;
-    }
-    else{
-      setVelocity = 0;
-    }
-
-    return setVelocity;
-  }
-
-  */
 
   //---------------------------Place Setters Here-------------------------------
   
@@ -162,12 +137,12 @@ public class Limelight extends SubsystemBase {
 
 
 
-
-
-  //Name: Brennan 
-  //About: displayes useful values to the dashboard 
   @Override
   public void periodic() {
-    //SmartDashboard.putNumber("Distance to Target", distanceToTarget());
+    SmartDashboard.putNumber("distanceToTarget", distanceToTarget());      
+    SmartDashboard.putNumber("test lime", 2);
+
+
   }
+
 }

@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Robot extends TimedRobot {
-	public static final Limelight limelight = new Limelight();
 
     private static OI oi;
 
     private static DrivetrainSubsystem drivetrain;
+    public static Limelight limelight;
 
 
 
@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         oi = new OI();
         drivetrain = DrivetrainSubsystem.getInstance();
+        limelight = Limelight.getInstance();
 
     }
 

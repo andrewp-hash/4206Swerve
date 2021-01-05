@@ -2,8 +2,11 @@ package com.swervedrivespecialties.exampleswerve.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.swervedrivespecialties.exampleswerve.RobotMap;
 import com.swervedrivespecialties.exampleswerve.commands.DriveCommand;
+
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -26,44 +29,56 @@ public class DrivetrainSubsystem extends Subsystem {
 
 
 //neeeds to be more exact
-    private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(123); //110
-    private static final double FRONT_RIGHT_ANGLE_OFFSET =  -Math.toRadians(88.1);  //171
-    private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(171); //88.1
-    private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(110.4); //123.4
+    private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(173.2); //123
+    private static final double FRONT_RIGHT_ANGLE_OFFSET =  -Math.toRadians(171);  //88.1
+    private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(16); //171
+    private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(123.9); //110.4
     
 
     private static DrivetrainSubsystem instance;
 
+    CANSparkMax frontLeftTurnMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, MotorType.kBrushless);
+    CANSparkMax frontRightTurnMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, MotorType.kBrushless);
+    CANSparkMax backLeftTurnMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, MotorType.kBrushless);
+    CANSparkMax backRightTurnMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, MotorType.kBrushless);
+
+    CANSparkMax frontLeftDriveMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, MotorType.kBrushless);
+    CANSparkMax frontRightDriveMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, MotorType.kBrushless);
+    CANSparkMax backLeftDriveMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, MotorType.kBrushless);
+    CANSparkMax backRightDriveMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, MotorType.kBrushless);
+    
+
+
     private final SwerveModule frontLeftModule = new Mk2SwerveModuleBuilder(
             new Vector2(TRACKWIDTH / 2.0, WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER), FRONT_LEFT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
+            .angleEncoder(new AnalogInput(RobotMap.CANConstants.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER), FRONT_LEFT_ANGLE_OFFSET)
+            .angleMotor(new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
                     Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(new CANSparkMax(RobotMap.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
+            .driveMotor(new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
                     Mk2SwerveModuleBuilder.MotorType.NEO)
             .build();
     private final SwerveModule frontRightModule = new Mk2SwerveModuleBuilder(
             new Vector2(TRACKWIDTH / 2.0, -WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER), FRONT_RIGHT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
+            .angleEncoder(new AnalogInput(RobotMap.CANConstants.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER), FRONT_RIGHT_ANGLE_OFFSET)
+            .angleMotor(new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
                     Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(new CANSparkMax(RobotMap.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
+            .driveMotor(new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
                     Mk2SwerveModuleBuilder.MotorType.NEO)
             .build();
     private final SwerveModule backLeftModule = new Mk2SwerveModuleBuilder(
             new Vector2(-TRACKWIDTH / 2.0, WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER), BACK_LEFT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
+            .angleEncoder(new AnalogInput(RobotMap.CANConstants.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER), BACK_LEFT_ANGLE_OFFSET)
+            .angleMotor(new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
                     Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(new CANSparkMax(RobotMap.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
+            .driveMotor(new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
                     Mk2SwerveModuleBuilder.MotorType.NEO)
             .build();
     private final SwerveModule backRightModule = new Mk2SwerveModuleBuilder(
             new Vector2(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER), BACK_RIGHT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
+            .angleEncoder(new AnalogInput(RobotMap.CANConstants.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER), BACK_RIGHT_ANGLE_OFFSET)
+            .angleMotor(new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
                     Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(new CANSparkMax(RobotMap.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
+            .driveMotor(new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
                     Mk2SwerveModuleBuilder.MotorType.NEO)
             .build();
 
@@ -84,9 +99,26 @@ public class DrivetrainSubsystem extends Subsystem {
         frontRightModule.setName("Front Right");
         backLeftModule.setName("Back Left");
         backRightModule.setName("Back Right");
+
+        /*
+
+        frontLeftTurnMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.TurnMotorCurrentLimit);
+        frontRightTurnMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.TurnMotorCurrentLimit);
+        backLeftTurnMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.TurnMotorCurrentLimit);
+        backRightTurnMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.TurnMotorCurrentLimit);
+        
+        frontLeftDriveMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.DriveMotorCurrentLimit);
+        frontRightDriveMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.DriveMotorCurrentLimit);
+        backLeftDriveMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.DriveMotorCurrentLimit);
+        backRightDriveMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.DriveMotorCurrentLimit);
+
+        */
+
     }
 
-    public static DrivetrainSubsystem getInstance() {
+
+
+        public static DrivetrainSubsystem getInstance() {
         if (instance == null) {
             instance = new DrivetrainSubsystem();
         }
@@ -94,6 +126,9 @@ public class DrivetrainSubsystem extends Subsystem {
         return instance;
     }
 
+
+
+ 
     @Override
     public void periodic() {
         frontLeftModule.updateSensors();
@@ -106,7 +141,15 @@ public class DrivetrainSubsystem extends Subsystem {
         SmartDashboard.putNumber("Back Left Module Angle", Math.toDegrees(backLeftModule.getCurrentAngle()));
         SmartDashboard.putNumber("Back Right Module Angle", Math.toDegrees(backRightModule.getCurrentAngle()));
 
+
         SmartDashboard.putNumber("Gyroscope Angle", gyroscope.getAngle().toDegrees());
+
+
+        SmartDashboard.putNumber("Turn Motor Current", frontRightTurnMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Drive Motor Currrent", frontRightDriveMotor.getOutputCurrent());
+
+
+
 
         frontLeftModule.updateState(TimedRobot.kDefaultPeriod);
         frontRightModule.updateState(TimedRobot.kDefaultPeriod);
