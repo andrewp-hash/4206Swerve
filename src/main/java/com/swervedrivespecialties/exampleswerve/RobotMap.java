@@ -26,8 +26,8 @@ public class RobotMap {
 
     public static final class CurrentLimit{
 
-      public static final int TurnMotorCurrentLimit = 15;
-      public static final int DriveMotorCurrentLimit = 50;
+      public static final int TurnMotorCurrentLimit = 15; //recomeneded 15
+      public static final int DriveMotorCurrentLimit = 50; // recomended 50
 
     }
     

@@ -1,5 +1,7 @@
 package com.swervedrivespecialties.exampleswerve.subsystems;
 
+import com.ctre.phoenix.sensors.CANCoder;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -36,6 +38,15 @@ public class DrivetrainSubsystem extends Subsystem {
     
 
     private static DrivetrainSubsystem instance;
+
+
+    CANCoder frontLeftCanEncoder = new CANCoder(RobotMap.CANConstants.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER);
+    CANCoder frontRightCanEncoder = new CANCoder(RobotMap.CANConstants.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER);
+    CANCoder backLeftCanEncoder = new CANCoder(RobotMap.CANConstants.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER);
+    CANCoder backRightCanEncoder = new CANCoder(RobotMap.CANConstants.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER);
+
+    //:/GodMode = True 
+    //:/AndrewSucks,LikeREALLLLLYSucks = VERY TRUE
 
     CANSparkMax frontLeftTurnMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, MotorType.kBrushless);
     CANSparkMax frontRightTurnMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, MotorType.kBrushless);
@@ -100,7 +111,7 @@ public class DrivetrainSubsystem extends Subsystem {
         backLeftModule.setName("Back Left");
         backRightModule.setName("Back Right");
 
-        /*
+        
 
         frontLeftTurnMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.TurnMotorCurrentLimit);
         frontRightTurnMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.TurnMotorCurrentLimit);
@@ -112,7 +123,7 @@ public class DrivetrainSubsystem extends Subsystem {
         backLeftDriveMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.DriveMotorCurrentLimit);
         backRightDriveMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.DriveMotorCurrentLimit);
 
-        */
+        
 
     }
 
@@ -182,4 +193,4 @@ public class DrivetrainSubsystem extends Subsystem {
     protected void initDefaultCommand() {
         setDefaultCommand(new DriveCommand());
     }
-}
+}                  
