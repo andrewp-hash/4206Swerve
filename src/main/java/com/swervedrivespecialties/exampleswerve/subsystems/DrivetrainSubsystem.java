@@ -8,8 +8,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.swervedrivespecialties.exampleswerve.RobotMap;
 import com.swervedrivespecialties.exampleswerve.commands.DriveCommand;
 
-
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -26,40 +26,28 @@ import org.frcteam2910.common.robot.drivers.Mk2SwerveModuleBuilder;
 import org.frcteam2910.common.robot.drivers.NavX;
 
 public class DrivetrainSubsystem extends Subsystem {
-    private static final double TRACKWIDTH = 25.5;  //25.5
-    private static final double WHEELBASE = 20.5;     //21
+    private static final double TRACKWIDTH = 24.5;  
+    //Length between the wheels width wise in inches
+    private static final double WHEELBASE = 24.5;     
+    //Length between the wheels length wise in inches
 
 
-//neeeds to be more exact
-    private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(173.2); //123
-    private static final double FRONT_RIGHT_ANGLE_OFFSET =  -Math.toRadians(171);  //88.1
-    private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(16); //171
-    private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(123.9); //110.4
+    //determines the angle for each motor to drive strait, look at readme for how to set up
+    private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(176.4); //123
+    private static final double FRONT_RIGHT_ANGLE_OFFSET =  -Math.toRadians(32.4);  //88.1
+    private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(352.4); //171
+    private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(287); //110.4
     
 
     private static DrivetrainSubsystem instance;
 
 
-    CANCoder frontLeftCanEncoder = new CANCoder(RobotMap.CANConstants.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER);
-    CANCoder frontRightCanEncoder = new CANCoder(RobotMap.CANConstants.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER);
-    CANCoder backLeftCanEncoder = new CANCoder(RobotMap.CANConstants.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER);
-    CANCoder backRightCanEncoder = new CANCoder(RobotMap.CANConstants.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER);
-
     //:/GodMode = True 
     //:/AndrewSucks,LikeREALLLLLYSucks = VERY TRUE
 
-    CANSparkMax frontLeftTurnMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, MotorType.kBrushless);
-    CANSparkMax frontRightTurnMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, MotorType.kBrushless);
-    CANSparkMax backLeftTurnMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, MotorType.kBrushless);
-    CANSparkMax backRightTurnMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, MotorType.kBrushless);
-
-    CANSparkMax frontLeftDriveMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, MotorType.kBrushless);
-    CANSparkMax frontRightDriveMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, MotorType.kBrushless);
-    CANSparkMax backLeftDriveMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, MotorType.kBrushless);
-    CANSparkMax backRightDriveMotor = new CANSparkMax(RobotMap.CANConstants.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, MotorType.kBrushless);
-    
 
 
+    //The setup for each indiviual swerve module, first it gets the frame size and position, next it gets the encoder and motors for that module
     private final SwerveModule frontLeftModule = new Mk2SwerveModuleBuilder(
             new Vector2(TRACKWIDTH / 2.0, WHEELBASE / 2.0))
             .angleEncoder(new AnalogInput(RobotMap.CANConstants.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER), FRONT_LEFT_ANGLE_OFFSET)
@@ -93,6 +81,8 @@ public class DrivetrainSubsystem extends Subsystem {
                     Mk2SwerveModuleBuilder.MotorType.NEO)
             .build();
 
+
+    //sets up the kitamatics and position for all four modules
     private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             new Translation2d(TRACKWIDTH / 2.0, WHEELBASE / 2.0),
             new Translation2d(TRACKWIDTH / 2.0, -WHEELBASE / 2.0),
@@ -100,35 +90,25 @@ public class DrivetrainSubsystem extends Subsystem {
             new Translation2d(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0)
     );
 
+
     private final Gyroscope gyroscope = new NavX(SPI.Port.kMXP);
+
 
     public DrivetrainSubsystem() {
         gyroscope.calibrate();
-        gyroscope.setInverted(true); // You might not need to invert the gyro
+        gyroscope.setInverted(true); 
+        // You might not need to invert the gyro
 
+
+        //sets name for easy calling in smartDashboard
         frontLeftModule.setName("Front Left");
         frontRightModule.setName("Front Right");
         backLeftModule.setName("Back Left");
         backRightModule.setName("Back Right");
-
-        
-
-        frontLeftTurnMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.TurnMotorCurrentLimit);
-        frontRightTurnMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.TurnMotorCurrentLimit);
-        backLeftTurnMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.TurnMotorCurrentLimit);
-        backRightTurnMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.TurnMotorCurrentLimit);
-        
-        frontLeftDriveMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.DriveMotorCurrentLimit);
-        frontRightDriveMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.DriveMotorCurrentLimit);
-        backLeftDriveMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.DriveMotorCurrentLimit);
-        backRightDriveMotor.setSmartCurrentLimit(RobotMap.CurrentLimit.DriveMotorCurrentLimit);
-
-        
-
     }
 
 
-
+        //allows easy calling for commands
         public static DrivetrainSubsystem getInstance() {
         if (instance == null) {
             instance = new DrivetrainSubsystem();
@@ -156,10 +136,8 @@ public class DrivetrainSubsystem extends Subsystem {
         SmartDashboard.putNumber("Gyroscope Angle", gyroscope.getAngle().toDegrees());
 
 
-        SmartDashboard.putNumber("Turn Motor Current", frontRightTurnMotor.getOutputCurrent());
-        SmartDashboard.putNumber("Drive Motor Currrent", frontRightDriveMotor.getOutputCurrent());
-
-
+       // SmartDashboard.putNumber("Turn Motor Current", frontRightTurnMotor.getOutputCurrent());
+       // SmartDashboard.putNumber("Drive Motor Currrent", frontRightDriveMotor.getOutputCurrent());
 
 
         frontLeftModule.updateState(TimedRobot.kDefaultPeriod);

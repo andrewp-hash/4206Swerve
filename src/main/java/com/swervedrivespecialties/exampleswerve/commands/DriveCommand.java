@@ -25,12 +25,12 @@ public class DriveCommand extends Command {
     protected void execute() {
 
 
-        double forward = Robot.getOi().getPrimaryJoystick().getRawAxis(1);
+        double forward = -Robot.getOi().getPrimaryJoystick().getRawAxis(1);
         forward = Utilities.deadband(forward);
         // Square the forward stick
         forward = Math.copySign(Math.pow(forward, 2.0), forward);
 
-        double strafe = Robot.getOi().getPrimaryJoystick().getRawAxis(0);
+        double strafe = -Robot.getOi().getPrimaryJoystick().getRawAxis(0);
         strafe = Utilities.deadband(strafe);
         // Square the strafe stick
         strafe = Math.copySign(Math.pow(strafe, 2.0), strafe);
@@ -43,7 +43,7 @@ public class DriveCommand extends Command {
         }
         else
         {
-            rotation = Robot.getOi().getPrimaryJoystick().getRawAxis(4);  
+            rotation = -Robot.getOi().getPrimaryJoystick().getRawAxis(2);  
            // Robot.limelight.setLED(1);
         }
         
