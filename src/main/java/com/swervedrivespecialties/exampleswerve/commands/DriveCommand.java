@@ -3,7 +3,9 @@ package com.swervedrivespecialties.exampleswerve.commands;
 import com.swervedrivespecialties.exampleswerve.Robot;
 import com.swervedrivespecialties.exampleswerve.RobotMap;
 import com.swervedrivespecialties.exampleswerve.subsystems.DrivetrainSubsystem;
-import com.swervedrivespecialties.exampleswerve.subsystems.Limelight;
+import com.swervedrivespecialties.exampleswerve.subsystems.LimelightSubsystem;
+import com.swervedrivespecialties.exampleswerve.subsystems.LimelightSubsystem;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import org.frcteam2910.common.robot.Utilities;
@@ -14,11 +16,11 @@ public class DriveCommand extends Command {
 
     public DriveCommand() {
         requires(DrivetrainSubsystem.getInstance());
-        requires(Limelight.getInstance());
+        requires(LimelightSubsystem.getInstance());
     }
 
 
-    private void requires(Limelight instance) {
+    private void requires(LimelightSubsystem instance) {
     }
 
     @Override

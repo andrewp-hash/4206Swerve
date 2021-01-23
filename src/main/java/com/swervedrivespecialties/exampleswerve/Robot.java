@@ -1,7 +1,7 @@
 package com.swervedrivespecialties.exampleswerve;
 
 import com.swervedrivespecialties.exampleswerve.subsystems.DrivetrainSubsystem;
-import com.swervedrivespecialties.exampleswerve.subsystems.Limelight;
+import com.swervedrivespecialties.exampleswerve.subsystems.LimelightSubsystem;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -12,7 +12,7 @@ public class Robot extends TimedRobot {
     private static OI oi;
 
     private static DrivetrainSubsystem drivetrain;
-    public static Limelight limelight;
+    public static LimelightSubsystem limelight;
 
 
 
@@ -26,7 +26,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         oi = new OI();
         drivetrain = DrivetrainSubsystem.getInstance();
-        limelight = Limelight.getInstance();
+        limelight = LimelightSubsystem.getInstance();
 
     }
 
