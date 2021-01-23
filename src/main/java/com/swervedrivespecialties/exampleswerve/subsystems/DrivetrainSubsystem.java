@@ -32,7 +32,8 @@ public class DrivetrainSubsystem extends Subsystem {
     //Length between the wheels length wise in inches
 
 
-    //determines the angle for each motor to drive strait, look at readme for how to set up
+    //determines the angle for each motor so the will drive straight
+    //look at README on the left side bar for how to set up (steps 3-9)
     private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(176.4); //123
     private static final double FRONT_RIGHT_ANGLE_OFFSET =  -Math.toRadians(32.4);  //88.1
     private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(352.4); //171
@@ -44,7 +45,6 @@ public class DrivetrainSubsystem extends Subsystem {
 
     //:/GodMode = True 
     //:/AndrewSucks,LikeREALLLLLYSucks = VERY TRUE
-
 
 
     //The setup for each indiviual swerve module, first it gets the frame size and position, next it gets the encoder and motors for that module
@@ -97,7 +97,7 @@ public class DrivetrainSubsystem extends Subsystem {
     public DrivetrainSubsystem() {
         gyroscope.calibrate();
         gyroscope.setInverted(true); 
-        // You might not need to invert the gyro
+        // You might not need to invert the gyro, we do
 
 
         //sets name for easy calling in smartDashboard

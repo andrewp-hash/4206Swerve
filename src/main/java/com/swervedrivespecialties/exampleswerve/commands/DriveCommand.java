@@ -25,12 +25,12 @@ public class DriveCommand extends Command {
     protected void execute() {
 
 
-        double forward = -Robot.getOi().getPrimaryJoystick().getRawAxis(1);
+        double forward = Robot.getOi().getPrimaryJoystick().getRawAxis(1);
         forward = Utilities.deadband(forward);
         // Square the forward stick
         forward = Math.copySign(Math.pow(forward, 2.0), forward);
 
-        double strafe = -Robot.getOi().getPrimaryJoystick().getRawAxis(0);
+        double strafe = Robot.getOi().getPrimaryJoystick().getRawAxis(0);
         strafe = Utilities.deadband(strafe);
         // Square the strafe stick
         strafe = Math.copySign(Math.pow(strafe, 2.0), strafe);
@@ -39,12 +39,13 @@ public class DriveCommand extends Command {
         if(Robot.getOi().getPrimaryJoystick().getRawButton(1))
         {
             rotation = Robot.limelight.rotatetoTarget(RobotMap.LimelightConstants.LimeLightDrivePID); //add limelight thing
-           // Robot.limelight.setLED(3);
+            Robot.limelight.setLED(3);
         }
         else
         {
-            rotation = -Robot.getOi().getPrimaryJoystick().getRawAxis(2);  
-           // Robot.limelight.setLED(1);
+            rotation = Robot.getOi().getPrimaryJoystick().getRawAxis(4);  
+            //If Using flightstick set axis to 2, if using xboxContrller set Axis to 4
+            Robot.limelight.setLED(1);
         }
         
         
